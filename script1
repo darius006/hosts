@@ -1,0 +1,21 @@
+#!/bin/bash
+
+ip=""
+name=""
+cat /etc/hosts | while read ip name
+do 
+nslookup $name 8.8.8.8 | while read a b
+do
+#echo "a: $a"
+#echo "b: $b"
+#echo "ip: $ip"
+if [[ $b != *":"* && $b != *"#"* && $a = "Address:" && $b != $ip ]]
+then
+echo "Bogus IP for $name in /etc/hosts !"
+fi
+done
+done
+
+
+exit
+
